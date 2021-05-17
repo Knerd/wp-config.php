@@ -13,11 +13,10 @@ If your file structure resembels the one below:
 
 Your config should look something like this:
 ```php
-  $defaults =[
-    ...
-    'docroot'        => 'public',      //* PUBLIC DIRECTORY
-    'wp_content'     => 'content',     //* WORDPRESS CONTENT DIRECTORY
-    'wp_dir'         => 'wp',          //* BLANK UNLESS WORDPRESS IS IN SUB DIRECTORY
+  new WP_Defaults([
+    'DOCROOT'        => 'public',      //* PUBLIC DIRECTORY
+    'WP_CONTENT'     => 'content',     //* WORDPRESS CONTENT DIRECTORY
+    'WP_DIR'         => 'wp',          //* BLANK UNLESS WORDPRESS IS IN SUB DIRECTORY
     ...
   ];
 ```
@@ -30,11 +29,10 @@ If WordPress starts at your public dir...:
       * themes/  # WordPress Themes
 
 ```php
-  $defaults =[
-    ...
-    'docroot'        => 'public',      //* PUBLIC DIRECTORY
-    'wp_content'     => 'wp-content',  //* WORDPRESS CONTENT DIRECTORY
-    'wp_dir'         => '',            //* BLANK UNLESS WORDPRESS IS IN SUB DIRECTORY
+  new WP_Defaults([
+    'DOCROOT'        => 'public',      //* PUBLIC DIRECTORY
+    'WP_CONTENT'     => 'wp-content',  //* WORDPRESS CONTENT DIRECTORY
+    'WP_DIR'         => '',            //* BLANK UNLESS WORDPRESS IS IN SUB DIRECTORY
     ...
   ];
 ```
@@ -46,11 +44,10 @@ If WordPress is your PROJECT_ROOT and isn't under a public dir...:
     * themes/  # WordPress Themes
 
 ```php
-  $defaults =[
+  new WP_Defaults([
+    'DOCROOT'        => '',         //* PUBLIC DIRECTORY
+    'WP_CONTENT'     => 'content',  //* WORDPRESS CONTENT DIRECTORY
+    'WP_DIR'         => '',         //* BLANK UNLESS WORDPRESS IS IN SUB DIRECTORY
     ...
-    'docroot'        => '',         //* PUBLIC DIRECTORY
-    'wp_content'     => 'content',  //* WORDPRESS CONTENT DIRECTORY
-    'wp_dir'         => '',         //* BLANK UNLESS WORDPRESS IS IN SUB DIRECTORY
-    ...
-  ];
+  ]);
 ```
