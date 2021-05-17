@@ -1,0 +1,13 @@
+/vendor/
+
+# WordPress
+docroot/wp
+
+# WordPress Plugins
+docroot/content/plugins/*/
+
+# WordPress Themes 
+docroot/content/themes/*/
+
+# WordPress Uploads 
+docroot/content/uploads/
