@@ -1,0 +1,44 @@
+{
+  "name": "knerd/wp-config.php",
+  "description": "wp-config.php w/ support for local config, composer, wp in subdirectory w/ custom content dir",
+  "type": "metapackage",
+  "license": "MIT",
+  "authors": [
+      {
+          "name": "xopherdeep",
+          "email": "heylisten@xtiv.net"
+      }
+  ],
+  "config": {
+    "vendor-dir": "vendor"
+  },
+  "repositories": [
+		{
+			"type": "composer",
+			"url": "https://wpackagist.org"
+		}
+  ],
+  "require": {
+      "johnpbloch/wordpress": "*",
+      "wpackagist-theme/twentytwentyone":"*",
+      "wpackagist-theme/twentytwenty":"*",
+      "wpackagist-theme/twentynineteen":"*"
+  },
+  "scripts": {
+    "post-install-cmd": "rm -rf docroot/wp/wp-content"
+  },
+  "extra": {
+    "wordpress-install-dir": "docroot/wp",
+    "installer-paths": {
+      "docroot/content/plugins/{$name}": [
+        "type:wordpress-plugin"
+      ],
+      "docroot/content/themes/{$name}": [
+        "type:wordpress-theme"
+      ],
+      "docroot/content/mu-plugins/{$name}": [
+        "type:wordpress-muplugin"
+      ]
+    }
+  }
+}
