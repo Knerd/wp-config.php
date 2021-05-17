@@ -1,6 +1,6 @@
 <?php
   /**
-   * WP_Defaults
+   * WP_Config
    * basic class to handle loading and maintaining default constants
    * config supports quick setup of where wordpress lives 
    * and where you want your content directory to be
@@ -8,9 +8,9 @@
    *  
    */
 
-  class WP_Defaults{        
-    private $DEFAULTS;
+  class WP_Config{        
     private $CONSTANTS;
+    private $DEFAULTS;
     private $VENDOR_DIR;
 
     /**
@@ -21,8 +21,7 @@
      * @return array 
      */
     function get_defaults(){
-      $ENV = $this->getenv_defaults();
-      extract( $ENV );
+      extract( $this->getenv_defaults() );
 
       //? IN PRODUCTION ENV?
       $isProduction = $this->is_production( $WP_DEBUG );
@@ -30,8 +29,7 @@
       return [
         'PROJECT_ROOT'       => __DIR__,
         'ABSPATH'            => __DIR__ . "/{$DOCROOT}/{$WP_DIR}",
-        'DATA_PATH'          => __DIR__ . "/{$DATA_DIR}",
-        'VENDOR_DIR'         => __DIR__ . "/{$this->VENDOR_DIR}",
+        'VENDOR_PATH'        => __DIR__ . "/{$this->VENDOR_DIR}",
         'DISALLOW_FILE_EDIT' => $isProduction,
         'IS_PRODUCTION'      => $isProduction,
         'WP_DEBUG'           => !$isProduction,
@@ -52,10 +50,17 @@
       $this->autoload();
     }
 
-    // GET COMPOSER DIRECTORY
+    /**
+     * get_vendor_dir
+     *
+     * @return string 
+     */
     function get_vendor_dir(){
-      $json = json_decode( file_get_contents( __DIR__ . "/composer.json" ) );
-      return $json->config->{'vendor-dir'} ?? 'vendor';
+      $json       = __DIR__ . "/composer.json";
+      $json       = file_get_contents( $json );
+      $json       = json_decode( $json );
+      $vendor_dir = $json->config->{'vendor-dir'} ?? 'vendor';
+      return $vendor_dir;
     }
     
     /**
@@ -68,7 +73,6 @@
       extract( $this->DEFAULTS );
       return [
         // ENV VARS OVERRIDE DEFAULTS 
-        'DATA_DIR'    => getenv('DATA_DIR')     ?: $DATA_DIR,
         'DOCROOT'     => getenv('DOCROOT')      ?: $DOCROOT,
         'SITE_HOST'   => getenv('VIRTUAL_HOST') ?: $_SERVER['SERVER_NAME'],
         'SITE_SCHEME' => getenv('SITE_SCHEME')  ?: $SITE_SCHEME, 
@@ -87,7 +91,6 @@
      */
     function get_official_defaults( $defaults ){
       $custom = [
-        'DATA_DIR',
         'DOCROOT',
         'SITE_SCHEME',
         'WP_CONTENT', 
@@ -102,14 +105,12 @@
 
     /**
      * autoload
-     * defines constants and loads autoload if present
+     * defines constants and setup psr-4 class auto-loading if using composer
      *
      * @return void
      */
     private function autoload(){
       $this->define_constants();
-
-      //??? SETUP PSR-4 CLASS AUTO-LOADING IF USING COMPOSER ???
       $this->require( $this->VENDOR_DIR . '/autoload.php' ); 
     }
     
@@ -122,7 +123,7 @@
     function define_constants(){
       $this->load_local_config();
 
-      // LOOP $CONSTANTS AND DEFINE DEFAULT IF NOT DEFINED IN wp-config-local.php 
+      // LOOP $CONSTANTS AND DEFINE DEFAULT I
       foreach ( $this->CONSTANTS as $CONST => $X )
         if ( !defined( $CONST ) ) 
           define( $CONST, $X );
@@ -135,10 +136,8 @@
      * @return void
      */
     function load_local_config(){
-      //??? INCLUDE LOCAL CONFIGURATION ???
       $local   = __DIR__ . "/wp-config-local.php";
       $secrets = __DIR__ . "/wp-secrets.php";
-
       $this->require( $local, $secrets ); 
     }
 
