@@ -11,8 +11,7 @@
    * @see wp-config-local-example.php - local configuration
    * @see wp-secrets.php - keys and salts
   */
-
-  $table_prefix = getenv('MYSQL_PREFIX') ?: 'wp_';
+  require_once('wp-config.class.php');
 
   /**
    * WP_Config
@@ -20,24 +19,26 @@
    * quickly set your content and wp dir using the WP_DIR and and WP_CONTENT
    ** * Unofficial settings used to setup custom wp & wp-content dirs
    */
-  require_once('wp-config.class.php');
   new WP_Config([
-    // SETUP CUSTOM FILE STRUCTURE 
-    'DOCROOT'           => 'docroot', //* PUBLIC DIRECTORY
-    'WP_CONTENT'        => 'content', //* WORDPRESS CONTENT DIRECTORY
-    'WP_DIR'            => 'wp',      //* BLANK UNLESS WORDPRESS IS IN SUB DIRECTORY
-    'SITE_SCHEME'       => 'http',    //* WORDPRESS SITE SCHEME
     // OFFICIAL WORDPRESS CONSTANTS
-    'WP_DEBUG'          => false,     // FOR DEVELOPERS: TURN OFF/ON WORDPRESS DEBUGGING MODE
-    'DB_HOST'           => 'db',          
-    'DB_NAME'           => 'default',     
-    'DB_USER'           => 'user',        
-    'DB_PASSWORD'       => 'user',        
-    'DB_CHARSET'        => 'utf8',        
-    'DB_COLLATE'        => '',            
-    'WPLANG'            => '',            
-    'WP_MEMORY_LIMIT'   => '128M',        
-    'WP_POST_REVISIONS' => 10,            
+      'WP_DEBUG'          => false,     // FOR DEVELOPERS: TURN OFF/ON WORDPRESS DEBUGGING MODE
+      'WPLANG'            => '',            
+      'WP_MEMORY_LIMIT'   => '128M',        
+      'WP_POST_REVISIONS' => 10,            
+      // DEFAULT DB CREDENTIALS 
+      'DB_CHARSET'        => 'utf8',        
+      'DB_COLLATE'        => '',            
+      'DB_HOST'           => 'db',          
+      'DB_NAME'           => 'default',     
+      'DB_USER'           => 'user',        
+      'DB_PASSWORD'       => 'user',        
+      'DB_PREFIX'         => 'wp_',          
+    // END: OFFICIAL
+    // CONFIG SCHEME & FILE STRUCTURE 
+      'SITE_SCHEME'       => 'http',    //* WORDPRESS SITE SCHEME
+      'DOCROOT'           => 'docroot', //* PUBLIC DIRECTORY
+      'WP_CONTENT'        => 'content', //* WORDPRESS CONTENT DIRECTORY
+      'WP_DIR'            => 'wp',      //* BLANK UNLESS WORDPRESS IS IN SUB DIRECTORY
   ]);
 
   /* That's all, stop editing! Happy blogging. */

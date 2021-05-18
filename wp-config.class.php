@@ -2,12 +2,12 @@
   /**
    * WP_Config
    * basic class to handle loading and maintaining default constants
-   * config supports quick setup of where wordpress lives 
-   * and where you want your content directory to be
-   * WP_DEBUG can also be turned on by setting the same var as an ENV var
-   *  
+   * supports quick setup of where wordpress lives and where you want your content directory to be
+   * WP_DEBUG can also be turned on by using environment vars
+   * @version 0.0.0
+   * @author xopherdeep
+   * @see README.md
    */
-
   class WP_Config{        
     private $CONSTANTS;
     private $DEFAULTS;
@@ -71,6 +71,11 @@
      */
     function getenv_defaults(){
       extract( $this->DEFAULTS );
+
+      $prefix = getenv('MYSQL_PREFIX') ?: $DB_PREFIX;
+      if($prefix)
+        $GLOBALS['table_prefix'] = $prefix;
+
       return [
         // ENV VARS OVERRIDE DEFAULTS 
         'DOCROOT'     => getenv('DOCROOT')      ?: $DOCROOT,
